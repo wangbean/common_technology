@@ -2,7 +2,8 @@
 #define _COMMON_H_
 
 enum {
-    PROJ_ID = 115,
+    SHARED_MEMORY_SIZE = 4,
     BUFFER_SIZE = 1024,
+    MY_SHM_ID = 67483
 };
 #endif
