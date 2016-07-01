@@ -1,0 +1,10 @@
+
+* 进程间的通讯方式
+** 无名管道(pipe)
+** 高级管道(popen)
+** 有名管道(named pipe)
+** 消息队列(message queue)
+** 信号量(semaphore)
+** 信号(signal)
+** 共享内存(shared memory)
+** 套接字(socket)
