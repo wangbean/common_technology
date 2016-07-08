@@ -1,12 +1,37 @@
-/* 1.线程池管理器（ThreadPool），用于启动、停用，管理线程池。
- * 2. 工作线程（WorkThread），线程池中的线程。
- * 3. 请求接口（WorkRequest），创建请求对象，以供工作线程调度任务的执行。
- * 4. 请求队列（RequestQueue）, 用于存放和提取请求。
- * 5. 结果队列（ResultQueue）, 用于存储请求执行后返回的结果。
- */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "thread_pool.h"
+/* 测试代码 */
 
-int main(int argc, char **argv)
+void*
+func(void *arg)
 {
+    size_t i = *(size_t *)arg;
+    while(i--) {
+	printf("thread run num = %zu\n", *(size_t *)arg);
+	sleep(1);
+    }
+    return NULL;
+}
+
+int
+main(int argc, char **argv)
+{
+    printf("main start...........\n");
+    tpool_t *tpool = tpool_create(3);
+    if(tpool == NULL) {
+	printf("tpool_create failed...\n");
+	exit(1);
+    }
+    size_t i = 10;
+    size_t a[10];
+    for(i = 0; i < 10; i++) {
+	a[i] = i;
+	tpool_task_add(tpool, func, (void*)&(a[i]));
+    }
+    tpool_destroy(tpool);
+    printf("main end...........\n");
     return 0;
 }

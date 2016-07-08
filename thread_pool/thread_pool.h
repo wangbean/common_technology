@@ -2,6 +2,7 @@
 #define _THREAD_POOL_H_
 
 #include <pthread.h>
+#include <stdbool.h>
 
 typedef void* (*callback_t)(void *);
 
@@ -14,8 +15,10 @@ typedef struct tpool_task {
 
 /* 线程池 */
 typedef struct tpool {
-    int max_thr_num;            /* 最大线程数 */
+    bool shutdown;		/* 关机按钮 */
+    size_t max_thr_num;		/* 最大线程数 */
     tpool_task_t *queue_head;   /* 线程链表头 */
+    pthread_t *thr_id;		/* 线程ID数组 */
     pthread_mutex_t queue_lock;
     pthread_cond_t queue_ready;
 } tpool_t;
@@ -26,7 +29,7 @@ typedef struct tpool {
  * @return 线程池指针 NULL: 失败
  */
 tpool_t*
-tpool_create(int max_thr_num);
+tpool_create(size_t max_thr_num);
 
 
 /* 
@@ -43,8 +46,8 @@ tpool_destroy(tpool_t *tpool);
  * @param arg 函数入参
  * @return 0: 成功 其它: 失败
  */
-int
-tpool_task_add(tpool_t *tpool, void* (*routine)(void*), void *arg);
+size_t
+tpool_task_add(tpool_t *tpool, callback_t routine, void *arg);
 
 
 #endif
