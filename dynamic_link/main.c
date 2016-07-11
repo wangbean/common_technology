@@ -9,7 +9,7 @@ main(int argc, char **argv)
 {
     void *handle;
     /* 打开动态库链接 */
-    handle = dlopen("./libtest.so", RTLD_LAZY);
+    handle = dlopen(argv[1], RTLD_LAZY);
     if(!handle) {
         perror("dlopen failed...");
         exit(-1);
